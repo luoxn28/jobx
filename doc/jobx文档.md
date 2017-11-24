@@ -10,7 +10,8 @@
 
 ## 1.2 jobx-executor（jobx执行器）
 
-jobx-executor启动：[nohup] java -jar jobx-executor-x.x.x.jar register_url jobx-executor.properties [port &]
+jobx-executor启动：[ nohup ] java -jar jobx-executor-x.x.x.jar ip port register_url [ jobx-executor.properties ]
+jobx-executor-x.x.x.jar 需要制定执行器ip:port、注册url（往调度中心注册执行器用）、执行器配置文件。
 
 ## 1.3 jobx-core（jobx依赖的jar包）
 

@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 首页Controller
+ *
+ * @author xiangnan
  */
 @RestController
 public class IndexController {

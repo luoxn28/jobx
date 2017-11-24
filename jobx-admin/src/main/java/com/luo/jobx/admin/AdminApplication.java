@@ -5,6 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * 调度中心启动类
+ *
+ * @author xiangnan
  */
 @SpringBootApplication
 public class AdminApplication {
