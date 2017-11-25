@@ -1,11 +1,12 @@
 package com.luo.jobx.core.executor;
 
+import com.luo.jobx.core.bean.RegisterParam;
 import com.luo.jobx.core.component.ArgsComponent;
-import com.xiaoleilu.hutool.http.HttpUtil;
+import com.luo.jobx.core.util.HttpXUtil;
+import com.xiaoleilu.hutool.convert.Convert;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 
 /**
  * 执行器启动器
@@ -23,13 +24,12 @@ public class ExecutorStarter {
         // 参数检查
         argsComponent.check(args);
 
-        HashMap<String, Object> paramMap = new HashMap<>();
-        paramMap.put("ip", "127.0.0.1");
-        paramMap.put("port", "9999");
-        paramMap.put("name", "executor");
+        String ip = args[0];
+        int port = Convert.toInt(args[1]);
+        String registerUrl = args[2];
 
-        String result= HttpUtil.post(args[2], paramMap);
-        System.out.println(result);
+        RegisterParam param = new RegisterParam(ip, port);
+        System.out.println(HttpXUtil.register(registerUrl, param));
     }
 
 }

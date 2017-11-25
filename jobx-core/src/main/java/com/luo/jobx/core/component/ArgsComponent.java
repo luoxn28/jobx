@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ArgsComponent {
 
-    private final Logger logger = LogManager.getLogger(ArgsComponent.class);
+    private final static Logger logger = LogManager.getLogger(ArgsComponent.class);
 
     public boolean check(String... args) {
         if (args.length < 3) {
