@@ -1,4 +1,4 @@
-package com.luo.jobx.executor.exception;
+package com.luo.jobx.core.exception;
 
 /**
  * 执行器异常类

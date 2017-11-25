@@ -1,4 +1,4 @@
-package com.luo.jobx.executor.exception;
+package com.luo.jobx.core.exception;
 
 import lombok.Data;
 

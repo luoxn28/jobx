@@ -1,7 +1,7 @@
-package com.luo.jobx.executor.component;
+package com.luo.jobx.core.component;
 
-import com.luo.jobx.executor.exception.ExceptionX;
-import com.luo.jobx.executor.exception.SystemException;
+import com.luo.jobx.core.exception.ExceptionX;
+import com.luo.jobx.core.exception.SystemException;
 import com.xiaoleilu.hutool.util.StrUtil;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;

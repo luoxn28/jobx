@@ -1,12 +1,11 @@
 package com.luo.jobx.executor;
 
-import com.luo.jobx.executor.component.ArgsComponent;
-import com.xiaoleilu.hutool.http.HttpUtil;
+import com.luo.jobx.core.executor.ExecutorStarter;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 
 /**
  * jobx 执行器启动器
@@ -14,25 +13,17 @@ import java.util.HashMap;
  * @author xiangnan
  */
 @Configuration
+@ComponentScan(basePackages = {"com.luo.jobx.core"})
 public class Starter implements CommandLineRunner {
 
     @Resource
-    private ArgsComponent argsComponent;
+    private ExecutorStarter executorStarter;
 
     @Override
     public void run(String... args) throws Exception {
         System.out.println("jobx 执行器启动啦...");
 
-        // 参数检查
-        argsComponent.check(args);
-
-        HashMap<String, Object> paramMap = new HashMap<>();
-        paramMap.put("ip", "127.0.0.1");
-        paramMap.put("port", "9999");
-        paramMap.put("name", "executor");
-
-        String result= HttpUtil.post(args[2], paramMap);
-        System.out.println(result);
+        executorStarter.run(args);
     }
 
 }
