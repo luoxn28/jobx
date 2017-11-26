@@ -1,6 +1,9 @@
 package com.test.jobx.core;
 
 import com.luo.jobx.core.executor.ExecutorStarter;
+import com.luo.jobx.core.rpc.RpcClientProxy;
+import com.luo.jobx.core.rpc.bean.TriggerParam;
+import com.luo.jobx.core.rpc.service.TriggerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -20,15 +23,16 @@ public class ExecutorStarterTest {
 
     @Test
     public void testRun() {
-        for (int i = 0; i < 100; i++) {
-            System.out.println();
-            System.out.println();
+
+        try {
+            TriggerService triggerService = (TriggerService) new RpcClientProxy(
+                    "http://127.0.0.1:9999", TriggerService.class).getObject();
+
+            triggerService.run(new TriggerParam("111", "222"));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        System.out.println(executorStarter);
-        for (int i = 0; i < 100; i++) {
-            System.out.println();
-            System.out.println();
-        }
+
     }
 
 }

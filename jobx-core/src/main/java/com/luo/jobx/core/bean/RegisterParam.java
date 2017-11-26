@@ -15,6 +15,13 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegisterParam implements Serializable {
+
+    /**
+     * 执行器每次启动产生一个token值，并发送给调度中心，
+     * 之后调用中心与执行器通信时携带该token，用于验证。
+     */
+    private String token;
+
     private String ip;
     private int port;
     private String name; // 执行器名字
