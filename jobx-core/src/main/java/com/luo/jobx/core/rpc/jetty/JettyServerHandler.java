@@ -12,6 +12,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ import java.io.OutputStream;
  *
  * @author xiangnan
  */
+@Component
 public class JettyServerHandler extends AbstractHandler {
 
     private final static Logger logger = LogManager.getLogger(JettyServerHandler.class);

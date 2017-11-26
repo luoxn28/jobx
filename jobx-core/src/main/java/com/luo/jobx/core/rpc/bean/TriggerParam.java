@@ -1,5 +1,6 @@
 package com.luo.jobx.core.rpc.bean;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.io.Serializable;
  */
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class TriggerParam implements Serializable {
     private String jobId;
     private String logId;
