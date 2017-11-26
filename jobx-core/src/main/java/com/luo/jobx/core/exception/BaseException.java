@@ -9,8 +9,8 @@ import lombok.Data;
  */
 @Data
 public class BaseException extends RuntimeException {
-    private int code;
-    private String msg;
+    public int code;
+    public String msg;
 
     public BaseException(int code, String msg) {
         super(msg);

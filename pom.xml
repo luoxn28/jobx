@@ -33,6 +33,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <lombok.version>1.16.18</lombok.version>
         <hutool.version>3.2.1</hutool.version>
+        <hessian.version>4.0.38</hessian.version>
+        <jetty.version>9.2.21.v20170120</jetty.version>
     </properties>
 
     <dependencyManagement>
@@ -53,6 +55,18 @@
                 <groupId>com.luo.jobx</groupId>
                 <artifactId>jobx-core</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.caucho</groupId>
+                <artifactId>hessian</artifactId>
+                <version>${hessian.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-server</artifactId>
+                <version>${jetty.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
