@@ -32,6 +32,12 @@ public class ExecutorInfoTest {
     @Test
     public void testSelect() {
         System.out.println(executorInfoDao.selectByExecutorId(entity.getExecutorId()));
+
+        ExecutorInfoEntity infoEntity = executorInfoDao.selectByExecutorId(entity.getExecutorId());
+        infoEntity.setToken("111");
+        infoEntity.setName("111");
+        executorInfoDao.update(infoEntity);
+
         System.out.println(executorInfoDao.selectByIpPort(entity.getIp(), entity.getPort()));
     }
 

@@ -23,7 +23,7 @@ public class JettyServer {
     private Server jettyServer;
     private Thread startThread;
 
-    public Thread start(String ip, int port, String registerUrl) {
+    public Thread start(String ip, int port) {
         startThread = new Thread(() -> {
             jettyServer = new Server(new ExecutorThreadPool());
             ServerConnector connector = new ServerConnector(jettyServer);
@@ -39,14 +39,10 @@ public class JettyServer {
             try {
                 jettyServer.start();
 
-                // 其他初始化操作
-
                 logger.info("jobx executor start success...");
                 jettyServer.join();
             } catch (Exception e) {
                 logger.error("Jetty服务器启动失败: " + e);
-            } finally {
-                destroy();
             }
         });
 
@@ -56,7 +52,11 @@ public class JettyServer {
         return startThread;
     }
 
-    private void destroy() {
+    public void join() throws InterruptedException {
+        startThread.join();
+    }
+
+    public void destroy() {
 
         if (jettyServer != null) {
             try {

@@ -1,9 +1,11 @@
 package com.luo.jobx.core.executor;
 
+import com.luo.jobx.core.bean.RegisterParam;
 import com.luo.jobx.core.component.ArgsComponent;
 import com.luo.jobx.core.exception.ExceptionX;
 import com.luo.jobx.core.exception.SystemException;
 import com.luo.jobx.core.rpc.jetty.JettyServer;
+import com.luo.jobx.core.thread.RegisterThread;
 import com.luo.jobx.core.util.R;
 import com.luo.jobx.core.util.SystemUtil;
 import com.xiaoleilu.hutool.convert.Convert;
@@ -26,12 +28,15 @@ public class ExecutorStarter {
 
     private final static Logger logger = LogManager.getLogger(ExecutorStarter.class);
 
-    // 执行器配置文件，所在目录为当前程序运行目录
+    // 执行器配置文件，所在目录为当前程序运行目录，注意配置文件中内容可能为中文，注意编码格式问题
     private static final String CONFIG_FILE_NAME = "executor.properties";
     private static final String CONFIG_FILE_PATH = SystemUtil.applicationPath + CONFIG_FILE_NAME;
 
     @Resource
     private ArgsComponent argsComponent;
+
+    @Resource
+    private RegisterThread registerThread;
 
     @Resource
     private JettyServer jettyServer;
@@ -75,7 +80,27 @@ public class ExecutorStarter {
         logger.info("执行器port: " + String.valueOf(port));
         logger.info("注册地址: " + registerUrl);
 
-        jettyServer.start(ip, port, registerUrl).join();
+        try {
+            registerThread.start(registerUrl, new RegisterParam(ip, port, "token-111"));
+            jettyServer.start(ip, port);
+
+            // 主线程join等待
+            jettyServer.join();
+        } catch (Exception e) {
+            logger.warn("执行器运行异常: " + e);
+        } finally {
+            destroy();
+        }
+    }
+
+    private void destroy() {
+        if (jettyServer != null) {
+            jettyServer.destroy();
+        }
+
+        if (registerThread != null) {
+            registerThread.stop();
+        }
     }
 
 }

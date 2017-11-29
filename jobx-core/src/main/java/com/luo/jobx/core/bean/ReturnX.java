@@ -28,4 +28,5 @@ public class ReturnX<T> implements Serializable {
     public boolean isSuccess() {
         return status.equals(R.status.SUCCESS);
     }
+
 }

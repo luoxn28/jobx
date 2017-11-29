@@ -18,4 +18,6 @@ public interface ExecutorInfoDao {
 
     boolean insert(ExecutorInfoEntity entity);
 
+    boolean update(ExecutorInfoEntity entity);
+
 }

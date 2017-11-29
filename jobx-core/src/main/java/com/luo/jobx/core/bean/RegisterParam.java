@@ -26,8 +26,9 @@ public class RegisterParam implements Serializable {
     private int port;
     private String name; // 执行器名字
 
-    public RegisterParam(String ip, int port) {
+    public RegisterParam(String ip, int port, String token) {
         this.ip = ip;
         this.port = port;
+        this.token = token;
     }
 }
