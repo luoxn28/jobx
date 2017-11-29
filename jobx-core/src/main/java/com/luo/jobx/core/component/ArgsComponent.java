@@ -26,10 +26,6 @@ public class ArgsComponent {
     private boolean check(String ip, String port, String registerUrl) {
 
         try {
-            logger.info("执行器ip: " + ip);
-            logger.info("执行器port: " + String.valueOf(port));
-            logger.info("注册地址: " + registerUrl);
-
             if (StrUtil.isBlank(ip) || !ip.contains(".")) {
                 throw ExceptionX.START_FAIL;
             }

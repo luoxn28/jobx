@@ -23,10 +23,11 @@ public class JettyServer {
     private Server jettyServer;
     private Thread startThread;
 
-    public Thread start(String ip, int port) {
+    public Thread start(String ip, int port, String registerUrl) {
         startThread = new Thread(() -> {
             jettyServer = new Server(new ExecutorThreadPool());
             ServerConnector connector = new ServerConnector(jettyServer);
+            connector.setHost(ip);
             connector.setPort(port);
             jettyServer.setConnectors(new Connector[]{ connector });
 

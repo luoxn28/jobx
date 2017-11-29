@@ -17,4 +17,13 @@ public interface R {
         String OFFLINE = "OFFLINE";
     }
 
+    /**
+     * 执行器配置项
+     */
+    interface executorProperties {
+        String ip = "ip";
+        String port = "port";
+        String registerUrl = "registerUrl";
+    }
+
 }

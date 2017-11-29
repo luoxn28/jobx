@@ -18,7 +18,7 @@
     <insert id="insert">
         INSERT executor (
             id, executor_id, ip, port,
-            `name`, token, status,
+            name, token, status,
             keep_alive_time, register_time, update_time
         )
         VALUE (
