@@ -13,4 +13,6 @@ public interface ExecutorInfoService {
 
     ReturnX<String> register(RegisterParam param);
 
+    ReturnX<String> keepAlive(String ip, int port);
+
 }

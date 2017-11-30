@@ -24,4 +24,6 @@ public interface ExecutorInfoDao {
 
     int updateForceByIpPort(ExecutorInfoEntity entity);
 
+    int updateTimeByIpPort(String ip, int port);
+
 }

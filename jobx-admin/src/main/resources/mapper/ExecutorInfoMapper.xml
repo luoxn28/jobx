@@ -70,4 +70,11 @@
             AND port = #{port}
     </update>
 
+    <update id="updateTimeByIpPort">
+        UPDATE executor
+        SET update_time = now()
+        WHERE ip = #{ip}
+            AND port = #{port}
+    </update>
+
 </mapper>
