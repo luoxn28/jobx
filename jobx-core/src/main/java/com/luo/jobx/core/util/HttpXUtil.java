@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 
 /**
  * http辅助类
@@ -29,7 +30,6 @@ public class HttpXUtil {
         try {
             HttpResponse response = postSend(registerUrl, param);
             if (response.getStatus() != 200) {
-                logger.warn("执行器注册异常: " + registerUrl);
                 return new ReturnX<>(R.status.FAIL, response.toString());
             }
 
@@ -40,8 +40,27 @@ public class HttpXUtil {
                 return new ReturnX<>(R.status.FAIL, "注册时返回结果不是json格式数据");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("执行器注册失败: " + e);
+            return new ReturnX<>(R.status.FAIL, e.toString());
+        }
+    }
+
+    /**
+     * 执行器与调度中心保活
+     */
+    public static ReturnX keepAlive(String keepAliveUrl, String ip, int port) {
+        try {
+            HttpResponse response = postSend(keepAliveUrl, ip, port);
+            if (response.getStatus() != 200) {
+                return new ReturnX<>(R.status.FAIL, response.toString());
+            }
+
+            String body = response.body();
+            if (StrUtil.isNotBlank(body) && StrUtil.startWith(body, "{")) {
+                return JacksonUtil.toObject(body, ReturnX.class);
+            } else {
+                return new ReturnX<>(R.status.FAIL, "注册时返回结果不是json格式数据");
+            }
+        } catch (Exception e) {
             return new ReturnX<>(R.status.FAIL, e.toString());
         }
     }
@@ -93,6 +112,18 @@ public class HttpXUtil {
     private static HttpResponse postSend(String url, Object param) {
         return HttpRequest.post(url)
                 .body(JSONUtil.toJsonStr(param))
+                .contentType("application/json")
+                .timeout(10000)
+                .execute();
+    }
+
+    private static HttpResponse postSend(String url, String ip, int port) {
+
+        if (!StrUtil.endWith(url, "/")) {
+            url += "/";
+        }
+
+        return HttpRequest.post(url + ip + "/" + port)
                 .contentType("application/json")
                 .timeout(10000)
                 .execute();

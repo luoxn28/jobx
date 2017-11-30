@@ -35,9 +35,9 @@ public class ExecutorInfoServiceImpl implements ExecutorInfoService {
             executorDao.insert(entity);
         }
 
-        logger.info("执行器注册: " + param.getIp() + ":" + param.getPort());
+        logger.info("执行器注册成功: " + param.getIp() + ":" + param.getPort());
         return new ReturnX<>(R.status.SUCCESS,
-                JacksonUtil.toJson(new RegisterResult("api/keep/alive")));
+                JacksonUtil.toJson(new RegisterResult("keep/alive")));
     }
 
     @Override
