@@ -16,8 +16,12 @@ public interface ExecutorInfoDao {
 
     ExecutorInfoEntity selectByIpPort(@Param("ip") String ip, @Param("port") int port);
 
-    boolean insert(ExecutorInfoEntity entity);
+    int insert(ExecutorInfoEntity entity);
 
-    boolean update(ExecutorInfoEntity entity);
+    int updateByExecutorId(ExecutorInfoEntity entity);
+
+    int updateByIpPort(ExecutorInfoEntity entity);
+
+    int updateForceByIpPort(ExecutorInfoEntity entity);
 
 }

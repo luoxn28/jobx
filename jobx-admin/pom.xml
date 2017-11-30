@@ -40,6 +40,8 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
+
+
         <dependency>
             <groupId>com.luo.jobx</groupId>
             <artifactId>jobx-core</artifactId>

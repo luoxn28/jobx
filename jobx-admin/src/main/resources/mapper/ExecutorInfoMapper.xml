@@ -28,7 +28,7 @@
         )
     </insert>
 
-    <update id="update">
+    <update id="updateByExecutorId">
         UPDATE executor
         SET
             <if test="ip != null">ip = #{ip},</if>
@@ -40,6 +40,34 @@
             <if test="registerTime != null">register_time = #{registerTime},</if>
             update_time = now()
         WHERE executor_id = #{executorId}
+    </update>
+
+    <update id="updateByIpPort">
+        UPDATE executor
+        SET
+            <if test="executorId != null">executor_id = #{executorId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="token != null">token = #{token},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="keepAliveTime != null">keep_alive_time = #{keepAliveTime},</if>
+            <if test="registerTime != null">register_time = #{registerTime},</if>
+            update_time = now()
+        WHERE ip = #{ip}
+            AND port = #{port}
+    </update>
+
+    <update id="updateForceByIpPort">
+        UPDATE executor
+        SET
+            <if test="executorId != null">executor_id = #{executorId},</if>
+            name = #{name},
+            token = #{token},
+            status = #{status},
+            keep_alive_time = #{keepAliveTime},
+            register_time = #{registerTime},
+            update_time = now()
+        WHERE ip = #{ip}
+            AND port = #{port}
     </update>
 
 </mapper>

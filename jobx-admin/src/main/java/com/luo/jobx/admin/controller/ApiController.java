@@ -2,7 +2,6 @@ package com.luo.jobx.admin.controller;
 
 import com.luo.jobx.admin.service.ExecutorInfoService;
 import com.luo.jobx.core.bean.RegisterParam;
-import com.luo.jobx.core.bean.RegisterResult;
 import com.luo.jobx.core.bean.ReturnX;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +23,7 @@ public class ApiController {
     private ExecutorInfoService executorService;
 
     @PostMapping("/register")
-    public ReturnX<RegisterResult> register(@RequestBody RegisterParam param) {
+    public ReturnX<String> register(@RequestBody RegisterParam param) {
         return executorService.register(param);
     }
 

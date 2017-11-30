@@ -35,11 +35,12 @@ public class HttpXUtil {
 
             String body = response.body();
             if (StrUtil.isNotBlank(body) && StrUtil.startWith(body, "{")) {
-                return JSONUtil.parseObj(body).toBean(ReturnX.class);
+                return JacksonUtil.toObject(body, ReturnX.class);
             } else {
                 return new ReturnX<>(R.status.FAIL, "注册时返回结果不是json格式数据");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("执行器注册失败: " + e);
             return new ReturnX<>(R.status.FAIL, e.toString());
         }

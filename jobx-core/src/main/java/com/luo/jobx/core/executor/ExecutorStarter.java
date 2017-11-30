@@ -6,6 +6,7 @@ import com.luo.jobx.core.exception.ExceptionX;
 import com.luo.jobx.core.exception.SystemException;
 import com.luo.jobx.core.rpc.jetty.JettyServer;
 import com.luo.jobx.core.thread.RegisterThread;
+import com.luo.jobx.core.util.BusinessIDGenerator;
 import com.luo.jobx.core.util.R;
 import com.luo.jobx.core.util.SystemUtil;
 import com.xiaoleilu.hutool.convert.Convert;
@@ -81,7 +82,7 @@ public class ExecutorStarter {
         logger.info("注册地址: " + registerUrl);
 
         try {
-            registerThread.start(registerUrl, new RegisterParam(ip, port, "token-111"));
+            registerThread.start(registerUrl, new RegisterParam(ip, port, BusinessIDGenerator.getId()));
             jettyServer.start(ip, port);
 
             // 主线程join等待

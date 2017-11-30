@@ -1,11 +1,14 @@
 package com.luo.jobx.admin.service.impl;
 
+import com.luo.jobx.admin.convert.ExecutorInfoConvert;
 import com.luo.jobx.admin.dao.ExecutorInfoDao;
 import com.luo.jobx.admin.entity.ExecutorInfoEntity;
 import com.luo.jobx.admin.service.ExecutorInfoService;
 import com.luo.jobx.core.bean.RegisterParam;
 import com.luo.jobx.core.bean.RegisterResult;
 import com.luo.jobx.core.bean.ReturnX;
+import com.luo.jobx.core.util.BusinessIDGenerator;
+import com.luo.jobx.core.util.JacksonUtil;
 import com.luo.jobx.core.util.R;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -22,35 +25,18 @@ public class ExecutorInfoServiceImpl implements ExecutorInfoService {
     private ExecutorInfoDao executorDao;
 
     @Override
-    public ReturnX<RegisterResult> register(RegisterParam param) {
+    public ReturnX<String> register(RegisterParam param) {
 
-        ExecutorInfoEntity oldEntity = executorDao.selectByIpPort(param.getIp(), param.getPort());
-        if (oldEntity == null) {
-            // 首次注册
-            ExecutorInfoEntity newEntity = convertToEntity(param);
-            newEntity.setStatus(R.executorStatus.ONLINE);
-            newEntity.setExecutorId("1111");
-            executorDao.insert(newEntity);
-        } else {
-            oldEntity.setToken(param.getToken());
-            oldEntity.setName(param.getName());
-            oldEntity.setStatus(R.executorStatus.ONLINE);
-            executorDao.update(oldEntity);
+        ExecutorInfoEntity entity = ExecutorInfoConvert.toEntity(param);
+        entity.setStatus(R.executorStatus.ONLINE);
+
+        if (executorDao.updateForceByIpPort(entity) != 1) {
+            entity.setExecutorId(BusinessIDGenerator.getId());
+            executorDao.insert(entity);
         }
 
         logger.info("执行器注册: " + param.getIp() + ":" + param.getPort());
-        return new ReturnX<>(R.status.SUCCESS, new RegisterResult());
-    }
-
-    private ExecutorInfoEntity convertToEntity(RegisterParam param) {
-        ExecutorInfoEntity entity = new ExecutorInfoEntity();
-
-        entity.setToken(param.getToken());
-        entity.setIp(param.getIp());
-        entity.setPort(param.getPort());
-        entity.setName(param.getName());
-
-        return entity;
+        return new ReturnX<>(R.status.SUCCESS, JacksonUtil.toJson(new RegisterResult()));
     }
 
 }

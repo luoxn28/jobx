@@ -11,6 +11,6 @@ import com.luo.jobx.core.bean.ReturnX;
  */
 public interface ExecutorInfoService {
 
-    ReturnX<RegisterResult> register(RegisterParam param);
+    ReturnX<String> register(RegisterParam param);
 
 }

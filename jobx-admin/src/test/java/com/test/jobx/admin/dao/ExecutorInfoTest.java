@@ -37,7 +37,7 @@ public class ExecutorInfoTest {
         ExecutorInfoEntity infoEntity = executorInfoDao.selectByExecutorId(entity.getExecutorId());
         infoEntity.setToken("111");
         infoEntity.setName("111");
-        executorInfoDao.update(infoEntity);
+        executorInfoDao.updateByExecutorId(infoEntity);
 
         System.out.println(executorInfoDao.selectByIpPort(entity.getIp(), entity.getPort()));
     }

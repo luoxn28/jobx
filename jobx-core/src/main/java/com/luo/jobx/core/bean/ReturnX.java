@@ -25,7 +25,7 @@ public class ReturnX<T> implements Serializable {
         this.content = content;
     }
 
-    public boolean isSuccess() {
+    public boolean success() {
         return status.equals(R.status.SUCCESS);
     }
 

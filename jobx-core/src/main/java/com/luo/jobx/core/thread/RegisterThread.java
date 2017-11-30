@@ -27,7 +27,7 @@ public class RegisterThread {
             public void run() {
                 while (running) {
                     ReturnX result = HttpXUtil.register(registerUrl, param);
-                    if (!result.isSuccess()) {
+                    if (!result.success()) {
                         logger.info("执行器注册失败，注册url: " + registerUrl);
                     }
 
