@@ -22,6 +22,7 @@ public class ExecutorInfoTest {
         entity.setExecutorId("aaa");
         entity.setIp("127.0.0.1111");
         entity.setPort(9999);
+        entity.setName("executor-demo");
     }
 
     @Test
