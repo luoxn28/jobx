@@ -3,7 +3,9 @@ package com.luo.jobx.core.rpc;
 import com.luo.jobx.core.exception.ExceptionX;
 import com.luo.jobx.core.rpc.encoder.RpcRequest;
 import com.luo.jobx.core.rpc.encoder.RpcResponse;
+import com.luo.jobx.core.rpc.service.ExecutorService;
 import com.luo.jobx.core.rpc.service.TriggerService;
+import com.luo.jobx.core.rpc.service.impl.ExecutorServiceImpl;
 import com.luo.jobx.core.rpc.service.impl.TriggerServiceImpl;
 import com.luo.jobx.core.util.R;
 import org.apache.log4j.LogManager;
@@ -24,9 +26,10 @@ public class RpcServiceFactory {
 
     private static ConcurrentHashMap<String, Class> serviceMap = new ConcurrentHashMap<>();
 
-    // 服务初始化
+    // 服务注册
     static {
         registerService(TriggerService.class, TriggerServiceImpl.class);
+        registerService(ExecutorService.class, ExecutorServiceImpl.class);
     }
 
     public static void registerService(Class clazz) {

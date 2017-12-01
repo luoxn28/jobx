@@ -15,6 +15,11 @@
             AND port = #{port}
     </select>
 
+    <select id="selectList" resultType="com.luo.jobx.admin.entity.ExecutorInfoEntity">
+        SELECT *
+        FROM executor
+    </select>
+
     <insert id="insert">
         INSERT executor (
             id, executor_id, ip, port,

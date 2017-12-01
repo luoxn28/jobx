@@ -1,8 +1,8 @@
 package com.luo.jobx.admin.service;
 
-import com.luo.jobx.core.bean.RegisterParam;
-import com.luo.jobx.core.bean.RegisterResult;
-import com.luo.jobx.core.bean.ReturnX;
+import com.luo.jobx.admin.bean.ExecutorInfoBean;
+
+import java.util.List;
 
 /**
  * 执行器信息服务类
@@ -11,8 +11,6 @@ import com.luo.jobx.core.bean.ReturnX;
  */
 public interface ExecutorInfoService {
 
-    ReturnX<String> register(RegisterParam param);
-
-    ReturnX<String> keepAlive(String ip, int port);
+    List<ExecutorInfoBean> getExecutorList();
 
 }
