@@ -1,9 +1,9 @@
 package com.luo.jobx.admin.controller;
 
+import com.luo.jobx.admin.bean.ExecutorInfoBean;
 import com.luo.jobx.admin.service.ExecutorInfoService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.xiaoleilu.hutool.util.StrUtil;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -22,6 +22,20 @@ public class ExecutorInfoController {
     @GetMapping("/list")
     public Object getExecutorList() {
         return executorService.getExecutorList();
+    }
+
+    @PutMapping
+    public Object updateExecutorInfo(@RequestBody ExecutorInfoBean bean) {
+        return executorService.updateExecutorInfo(bean);
+    }
+
+    @DeleteMapping("/{executorId}")
+    public Object deleteExecutorInfo(@PathVariable String executorId) {
+        if (StrUtil.isBlank(executorId)) {
+            return 0;
+        }
+
+        return executorService.deleteExecutorInfo(executorId);
     }
 
 }

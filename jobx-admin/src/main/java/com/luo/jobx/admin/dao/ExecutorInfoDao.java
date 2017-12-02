@@ -4,6 +4,7 @@ import com.luo.jobx.admin.entity.ExecutorInfoEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,6 +21,8 @@ public interface ExecutorInfoDao {
 
     List<ExecutorInfoEntity> selectList();
 
+    List<ExecutorInfoEntity> selectListOnline();
+
     int insert(ExecutorInfoEntity entity);
 
     int updateByExecutorId(ExecutorInfoEntity entity);
@@ -28,6 +31,9 @@ public interface ExecutorInfoDao {
 
     int updateForceByIpPort(ExecutorInfoEntity entity);
 
-    int updateTimeByIpPort(@Param("ip") String ip, @Param("port") int port);
+    int updateTimeByIpPort(@Param("updateTime") Date updateTime, @Param("status") String status,
+                           @Param("ip") String ip, @Param("port") int port);
+
+    int updateStatusByExecutorId(@Param("status") String status, @Param("executorId") String executorId);
 
 }

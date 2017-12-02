@@ -3,6 +3,7 @@ package com.luo.jobx.admin.convert;
 import com.luo.jobx.admin.bean.ExecutorInfoBean;
 import com.luo.jobx.admin.entity.ExecutorInfoEntity;
 import com.luo.jobx.core.bean.RegisterParam;
+import com.xiaoleilu.hutool.date.DateUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,7 @@ public class ExecutorInfoConvert extends BaseConvert {
 
         if (entity != null) {
             bean = mapper.map(entity, ExecutorInfoBean.class);
+            bean.setRegisterTimeStr(DateUtil.format(entity.getRegisterTime(), "yyyy-MM-dd HH:mm:ss"));
         }
 
         return bean;

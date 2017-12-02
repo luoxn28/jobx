@@ -1,9 +1,8 @@
 package com.luo.jobx.admin.bean;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
 
 /**
  * ExecutorInfoBean
@@ -12,6 +11,7 @@ import java.util.Date;
  */
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class ExecutorInfoBean {
     private String executorId;
     private String ip;
@@ -19,5 +19,5 @@ public class ExecutorInfoBean {
     private String name;
     private String status;         // 执行器当前状态，见 R.executorStatus
     private int keepAliveTime;     // 与调度器的保活时间（单位s）
-    private Date registerTime;
+    private String registerTimeStr;
 }

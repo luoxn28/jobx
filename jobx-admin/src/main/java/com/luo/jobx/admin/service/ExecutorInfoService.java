@@ -13,4 +13,8 @@ public interface ExecutorInfoService {
 
     List<ExecutorInfoBean> getExecutorList();
 
+    int updateExecutorInfo(ExecutorInfoBean bean);
+
+    int deleteExecutorInfo(String executorId);
+
 }

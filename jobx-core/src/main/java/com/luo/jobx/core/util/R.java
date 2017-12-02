@@ -15,6 +15,7 @@ public interface R {
     interface executorStatus {
         String ONLINE = "ONLINE";
         String OFFLINE = "OFFLINE";
+        String DELETED = "DELETED";
     }
 
     /**
@@ -23,7 +24,9 @@ public interface R {
     interface executorProperties {
         String ip = "ip";
         String port = "port";
+        String name = "name";
         String registerUrl = "registerUrl";
+        String keepAliveTime = "keepAliveTime";
     }
 
 }

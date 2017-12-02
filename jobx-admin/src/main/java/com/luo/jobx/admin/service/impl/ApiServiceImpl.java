@@ -10,11 +10,13 @@ import com.luo.jobx.core.bean.ReturnX;
 import com.luo.jobx.core.util.BusinessIDGenerator;
 import com.luo.jobx.core.util.JacksonUtil;
 import com.luo.jobx.core.util.R;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * 执行器同信API服务类
@@ -34,8 +36,10 @@ public class ApiServiceImpl implements ApiService {
 
         ExecutorInfoEntity entity = ExecutorInfoConvert.toEntity(param);
         entity.setStatus(R.executorStatus.ONLINE);
+        entity.setRegisterTime(new Date());
+        entity.setUpdateTime(new Date());
 
-        if (executorDao.updateForceByIpPort(entity) != 1) {
+        if (1 != executorDao.updateForceByIpPort(entity)) {
             entity.setExecutorId(BusinessIDGenerator.getId());
             executorDao.insert(entity);
         }
@@ -47,8 +51,12 @@ public class ApiServiceImpl implements ApiService {
 
     @Override
     public ReturnX<String> keepAlive(String ip, int port) {
-        executorDao.updateTimeByIpPort(ip, port);
-        return ReturnX.SUCCESS;
+        Date date = new Date();
+        if (1 == executorDao.updateTimeByIpPort(date, R.executorStatus.ONLINE, ip, port)) {
+            return ReturnX.SUCCESS;
+        } else {
+            return ReturnX.FAIL;
+        }
     }
 
 }

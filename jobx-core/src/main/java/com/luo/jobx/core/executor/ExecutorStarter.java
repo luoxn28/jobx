@@ -31,7 +31,14 @@ public class ExecutorStarter {
 
     // 执行器配置文件，所在目录为当前程序运行目录，注意配置文件中内容可能为中文，注意编码格式问题
     private static final String CONFIG_FILE_NAME = "executor.properties";
-    private static final String CONFIG_FILE_PATH = SystemUtil.applicationPath + CONFIG_FILE_NAME;
+    public static final String CONFIG_FILE_PATH = SystemUtil.applicationPath + CONFIG_FILE_NAME;
+
+    public static final String TOKEN = BusinessIDGenerator.getId();
+    public static String REGISTER_URL = "";
+    public static String IP = "";
+    public static int PORT = 9999;
+    public static String NAME = "";
+    public static int KEEP_ALIVE_TIME = 10;
 
     @Resource
     private ArgsComponent argsComponent;
@@ -42,12 +49,22 @@ public class ExecutorStarter {
     @Resource
     private JettyServer jettyServer;
 
+    public static void logExecutorConfigInfo() {
+        logger.info("执行器配置文件: " + CONFIG_FILE_PATH);
+        logger.info("注册地址: " + REGISTER_URL);
+        logger.info("执行器ip: " + IP);
+        logger.info("执行器port: " + PORT);
+        logger.info("执行器名字: " + NAME);
+        logger.info("执行器心跳间隔(s): " + KEEP_ALIVE_TIME);
+    }
+
     public void run(String... args) throws Exception {
 
         String ip, registerUrl;
-        int port;
+        String name = null;
+        int port, keepAliveTime = 0;
 
-        if (args.length >= 3) {
+        if (args.length == 3) {
             // 使用输入参数来启动executor
             argsComponent.check(args);
 
@@ -63,7 +80,7 @@ public class ExecutorStarter {
             props.put(R.executorProperties.registerUrl, registerUrl);
             props.store(writer, "first created by executor. :)");
             writer.close();
-        } else {
+        } else if (args.length == 0) {
             File file = new File(CONFIG_FILE_PATH);
             if (!file.exists()) {
                 // 配置文件不存在抛出异常
@@ -71,18 +88,50 @@ public class ExecutorStarter {
             }
 
             Props props = new Props(file);
+            if ((props.get(R.executorProperties.ip) == null) ||
+                    (props.get(R.executorProperties.port) == null) ||
+                    (props.get(R.executorProperties.registerUrl)  == null)) {
+                logger.error("配置文件参数错误");
+                throw new SystemException(ExceptionX.START_FAIL);
+            }
+
             ip = Convert.toStr(props.get(R.executorProperties.ip));
             port = Convert.toInt(props.get(R.executorProperties.port));
             registerUrl = Convert.toStr(props.get(R.executorProperties.registerUrl));
+
+            if (props.get(R.executorProperties.keepAliveTime) != null) {
+                keepAliveTime = Convert.toInt(props.get(R.executorProperties.keepAliveTime));
+            }
+            if (keepAliveTime < 10) {
+                keepAliveTime = 10;
+            }
+
+            if (props.get(R.executorProperties.name) != null) {
+                name = Convert.toStr(props.get(R.executorProperties.name));
+            } else {
+                name = "executor";
+            }
+        } else {
+            throw new SystemException(ExceptionX.START_FAIL);
         }
 
-        logger.info("执行器配置文件: " + CONFIG_FILE_PATH);
-        logger.info("执行器ip: " + ip);
-        logger.info("执行器port: " + String.valueOf(port));
-        logger.info("注册地址: " + registerUrl);
+        // 保存ip:port配置
+        REGISTER_URL = registerUrl;
+        IP = ip;
+        PORT = port;
+        NAME = name;
+        KEEP_ALIVE_TIME = keepAliveTime;
+
+        logger.info("执行器TOKEN: " + TOKEN);
+        logExecutorConfigInfo();
 
         try {
-            registerThread.start(registerUrl, new RegisterParam(ip, port, BusinessIDGenerator.getId()));
+
+            RegisterParam registerParam = new RegisterParam(ip, port, TOKEN);
+            registerParam.setKeepAliveTime(keepAliveTime);
+            registerParam.setName(name);
+
+            registerThread.start(registerUrl, registerParam);
             jettyServer.start(ip, port);
 
             // 主线程join等待

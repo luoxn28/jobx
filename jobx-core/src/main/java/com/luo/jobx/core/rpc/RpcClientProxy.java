@@ -26,6 +26,11 @@ public class RpcClientProxy implements FactoryBean<Object> {
     private String toUrl;
     private Class<?> clazz;
 
+    public RpcClientProxy(Class<?> clazz, String toUrl) {
+        this.clazz = clazz;
+        this.toUrl = toUrl;
+    }
+
     @Override
     public Object getObject() throws Exception {
 

@@ -5,12 +5,11 @@ import com.luo.jobx.core.bean.RegisterResult;
 import com.luo.jobx.core.bean.ReturnX;
 import com.luo.jobx.core.util.HttpXUtil;
 import com.luo.jobx.core.util.JacksonUtil;
-import com.xiaoleilu.hutool.convert.Convert;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -56,6 +55,7 @@ public class RegisterThread {
                                 keepAlive = true;
 
                                 logger.info("执行器注册成功，注册url: " + registerUrl);
+                                logger.info("执行器与调度中心保活中...");
                             } catch (Exception e) {
                                 logger.info("执行器注册时调度中心返回数据格式出错: " + e);
                             }
