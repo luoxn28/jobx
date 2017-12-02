@@ -9,18 +9,18 @@ import Index from '../pages/Index.vue'
 import Executor from '../pages/Executor.vue'
 
 var routes = [
-  {path: "/", redirect: '/index'},
+  { path: "/", redirect: '/index' },
   {
     path: "/index",
     name: 'Index',
     meta: {title: 'jobx测试平台', filter: false},
     component: Index,
     children: [
-      { path: 'executor', component: Executor }
+      { path: 'executor', component: Executor, name: '执行器管理', meta: {title: 'jobx - 执行器管理', filter: false} }
     ]
   },
 
-  {path: '*', name: 'Error404', meta: {title: '404', filter: false}, component: Error404}
+  { path: '*', name: 'Error404', meta: {title: '404', filter: false}, component: Error404 }
 ];
 
 export default new Router({

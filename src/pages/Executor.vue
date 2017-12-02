@@ -165,11 +165,11 @@
               });
               this.loadExecutorData();
             }).catch((res) => {
-            this.$message({
-              type: 'success',
-              message: '删除失败!'
-            });
-          })
+              this.$message({
+                type: 'success',
+                message: '删除失败!'
+              });
+            })
 
         }).catch(() => {
           this.$message({
