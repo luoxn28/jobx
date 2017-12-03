@@ -25,7 +25,7 @@
             </el-menu-item>
           </router-link>
 
-          <router-link to="/index">
+          <router-link to="/index/job">
             <el-menu-item index="2">
               <i class="el-icon-menu"></i>
               <span slot="title">任务管理</span>
@@ -34,14 +34,14 @@
 
           <router-link to="/index">
             <el-menu-item index="3">
-              <i class="el-icon-setting"></i>
+              <i class="el-icon-tickets"></i>
               <span slot="title">日志管理</span>
             </el-menu-item>
           </router-link>
 
           <router-link to="/index/executor">
             <el-menu-item index="4">
-              <i class="el-icon-menu"></i>
+              <i class="el-icon-setting"></i>
               <span slot="title">执行器管理</span>
             </el-menu-item>
           </router-link>

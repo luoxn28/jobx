@@ -6,6 +6,7 @@ Vue.use(Router);
 
 import Error404 from '../components/Error404.vue'
 import Index from '../pages/Index.vue'
+import Job from '../pages/Job.vue'
 import Executor from '../pages/Executor.vue'
 
 var routes = [
@@ -16,7 +17,8 @@ var routes = [
     meta: {title: 'jobx测试平台', filter: false},
     component: Index,
     children: [
-      { path: 'executor', component: Executor, name: '执行器管理', meta: {title: 'jobx - 执行器管理', filter: false} }
+      { path: 'job', component: Job, name: '任务管理', meta: {title: 'jobx - 任务管理', filter: false} },
+      { path: 'executor', component: Executor, name: '执行器管理', meta: {title: 'jobx - 执行器管理', filter: false} },
     ]
   },
 

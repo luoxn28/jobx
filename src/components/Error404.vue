@@ -10,6 +10,7 @@
     </p>
     <h1>{{ msg }}</h1>
     <h4>{{ notice }}</h4>
+    <h4><a href="/">jobx</a></h4>
   </div>
 </template>
 
