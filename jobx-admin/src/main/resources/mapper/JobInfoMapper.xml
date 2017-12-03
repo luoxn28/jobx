@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.luo.jobx.admin.dao.JobInfoDao">
+
+    <select id="selectList" resultType="com.luo.jobx.admin.entity.JobInfoEntity">
+        SELECT *
+        FROM job
+        WHERE
+            <if test="jobType != null">job_type = #{jobType} AND</if>
+            status != 'DELETED'
+    </select>
+
+    <insert id="insert">
+        INSERT job (
+            id, job_id, job_name, job_type, job_role,
+            cron, `desc`, param,
+            script_path, class_name, param_creator, param_dynamic,
+            route_strategy, fail_strategy, email_phone,
+            create_time, update_time, status
+        )
+        VALUE (
+            #{id}, #{jobId}, #{jobName}, #{jobType}, #{jobRole},
+            #{cron}, #{desc}, #{param},
+            #{scriptPath}, #{className}, #{paramCreator}, #{paramDynamic},
+            #{routeStrategy}, #{failStrategy}, #{emailPhone},
+            #{createTime}, #{updateTime}, #{status}
+        )
+    </insert>
+
+</mapper>

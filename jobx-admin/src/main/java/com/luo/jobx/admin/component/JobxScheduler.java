@@ -11,7 +11,6 @@ import org.quartz.*;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.Date;
 
 /**
  * jobx 调度器
@@ -31,7 +30,9 @@ public class JobxScheduler {
             throw new ParamException(ExceptionX.ERROR_PARAM);
         }
 
-        checkExists(name, group);
+        if (checkExists(name, group)) {
+            throw new JobException(ExceptionX.JOB_EXISTS);
+        }
 
         // cron
         CronScheduleBuilder cronScheduleBuilder =
@@ -46,10 +47,18 @@ public class JobxScheduler {
         logger.info("添加任务成功: jobDetail=" + jobDetail);
     }
 
-    private void checkExists(String name, String group) throws Exception {
-        if (scheduler.checkExists(new TriggerKey(name, group))) {
-            throw new JobException(ExceptionX.JOB_EXISTS);
+    public void deleteJob(String name, String group) throws Exception {
+        if (checkExists(name, group)) {
+            TriggerKey triggerKey = new TriggerKey(name, group);
+            scheduler.unscheduleJob(triggerKey);
+            logger.info("删除任务成功，triggerKey=" + triggerKey);
+        } else {
+            logger.warn("删除任务失败，未找到该任务，name=" + name + ", group=" + group);
         }
+    }
+
+    private boolean checkExists(String name, String group) throws Exception {
+        return scheduler.checkExists(new TriggerKey(name, group));
     }
 
 }

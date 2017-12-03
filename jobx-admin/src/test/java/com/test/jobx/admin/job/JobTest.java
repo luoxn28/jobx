@@ -30,9 +30,11 @@ public class JobTest {
     public void testJob() {
 
         try {
-//            jobxScheduler.addJob("jobId", "groupId", "0/5 * * * * ?");
+            jobxScheduler.addJob("jobId", "groupId", "0/5 * * * * ?");
 
-            Thread.sleep(100000000);
+            Thread.sleep(20000);
+
+            jobxScheduler.deleteJob("jobId", "groupId");
         } catch (Exception e) {
             e.printStackTrace();
         }
