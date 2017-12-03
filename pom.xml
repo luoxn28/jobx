@@ -41,6 +41,7 @@
         <dozer.version>5.4.0</dozer.version>
         <jackson.version>2.8.4</jackson.version>
         <jackson.mapper.asl.version>1.9.13</jackson.mapper.asl.version>
+        <quartz.version>2.3.0</quartz.version>
     </properties>
 
     <dependencyManagement>
@@ -113,6 +114,12 @@
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-server</artifactId>
                 <version>${jetty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+                <version>${quartz.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -11,4 +11,9 @@ public interface ExceptionX {
     SystemException RPC_FAIL = new SystemException(-2, "RPC通信错误");
     SystemException NO_RPC_SERVICE = new SystemException(-3, "未找到RCP服务");
 
+    ParamException ERROR_PARAM = new ParamException(-1, "参数错误");
+    ParamException ERROR_PARAM_CRON = new ParamException(-1, "CRON表达式错误");
+
+    JobException JOB_EXISTS = new JobException(-1, "任务已存在");
+
 }
