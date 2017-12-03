@@ -28,7 +28,7 @@ public class ExecutorInfoServiceImpl implements ExecutorInfoService {
 
     @Override
     public List<ExecutorInfoBean> getExecutorList() {
-        return ExecutorInfoConvert.toBeanList(executorDao.selectListOnline());
+        return ExecutorInfoConvert.toBeanList(executorDao.selectList());
     }
 
     @Override

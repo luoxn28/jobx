@@ -18,6 +18,7 @@
     <select id="selectList" resultType="com.luo.jobx.admin.entity.ExecutorInfoEntity">
         SELECT *
         FROM executor
+        WHERE status != 'DELETED'
     </select>
 
     <select id="selectListOnline" resultType="com.luo.jobx.admin.entity.ExecutorInfoEntity">
