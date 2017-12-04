@@ -16,6 +16,8 @@ public interface JobInfoDao {
 
     List<JobInfoEntity> selectList(@Param("jobType") String jobType);
 
+    JobInfoEntity selectByJobId(@Param("jobId") String jobId);
+
     int insert(JobInfoEntity entity);
 
 }

@@ -52,7 +52,8 @@ public class ExecutorStatusCheckTask {
                                     R.executorStatus.OFFLINE, entity.getExecutorId())) {
                                 logger.info("将执行器设置为下线，executorId=" + entity.getExecutorId());
                             } else {
-                                logger.info("将执行器设置为下线失败，executorId=" + entity.getExecutorId());
+                                logger.info("将执行器设置为下线失败，executor=" + entity.getIp() + ":" +
+                                    entity.getPort());
                             }
                         }
                     });

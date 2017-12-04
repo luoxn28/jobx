@@ -1,11 +1,14 @@
 package com.luo.jobx.admin.component;
 
+import com.luo.jobx.admin.dao.JobInfoDao;
+import com.luo.jobx.admin.entity.JobInfoEntity;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobKey;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.Date;
 
 /**
@@ -18,6 +21,9 @@ public class JobxTrigger {
 
     private final static Logger logger = LogManager.getLogger(JobxTrigger.class);
 
+    @Resource
+    private JobInfoDao jobDao;
+
     public void trigger(JobExecutionContext context) {
         // quartz调度任务的时间
         Date scheduledTime = context.getScheduledFireTime();
@@ -27,6 +33,12 @@ public class JobxTrigger {
     }
 
     private void trigger(String jobId, String groupId, Date scheduledTime) {
+
+        JobInfoEntity jobEntity = jobDao.selectByJobId(jobId);
+        if (jobEntity == null) {
+            logger.error("未找到任务，jobId=" + jobId);
+        }
+
         System.out.println("任务被调度了");
         System.out.println(jobId);
         System.out.println(groupId);

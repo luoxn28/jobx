@@ -11,6 +11,8 @@ import java.util.List;
  */
 public interface JobInfoService {
 
-    public List<JobInfoBean> getJobList();
+    List<JobInfoBean> getJobList();
+
+    String[][] getJobType();
 
 }

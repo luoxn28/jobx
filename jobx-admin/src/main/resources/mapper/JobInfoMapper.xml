@@ -10,6 +10,12 @@
             status != 'DELETED'
     </select>
 
+    <select id="selectByJobId" resultType="com.luo.jobx.admin.entity.JobInfoEntity">
+        SELECT *
+        FROM job
+        WHERE job_id = #{jobId}
+    </select>
+
     <insert id="insert">
         INSERT job (
             id, job_id, job_name, job_type, job_role,

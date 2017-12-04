@@ -29,4 +29,13 @@ public interface R {
         String keepAliveTime = "keepAliveTime";
     }
 
+    /**
+     * 任务类型
+     */
+    interface jobType {
+        String Script = "Script";
+        String Java = "Java";
+    }
+
+
 }

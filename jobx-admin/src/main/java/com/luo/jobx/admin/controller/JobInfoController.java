@@ -24,4 +24,9 @@ public class JobInfoController {
         return jobService.getJobList();
     }
 
+    @GetMapping("/type")
+    public Object getJobType() {
+        return jobService.getJobType();
+    }
+
 }
