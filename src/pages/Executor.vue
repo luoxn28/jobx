@@ -15,8 +15,8 @@
       <el-table-column align="center" prop="keepAliveTime" label="心跳间隔(s)" width="100"></el-table-column>
       <el-table-column align="center" prop="status" label="状态" width="100">
         <template scope="scope">
-          <el-tag v-if="scope.row.status === 'ONLINE'" type="success">在线</el-tag>
-          <el-tag v-if="scope.row.status === 'OFFLINE'" type="warning">离线</el-tag>
+          <el-tag v-if="scope.row.status === 'ONLINE'" type="success" size="small">在线</el-tag>
+          <el-tag v-if="scope.row.status === 'OFFLINE'" type="warning" size="small">离线</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作">
