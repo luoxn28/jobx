@@ -15,4 +15,6 @@ public interface JobInfoService {
 
     String[][] getJobType();
 
+    boolean insert(JobInfoBean jobBean);
+
 }

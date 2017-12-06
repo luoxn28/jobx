@@ -109,6 +109,7 @@ public class ExecutorStarter {
             if (props.get(R.executorProperties.name) != null) {
                 name = Convert.toStr(props.get(R.executorProperties.name));
             } else {
+                // 执行器默认名字
                 name = "executor";
             }
         } else {

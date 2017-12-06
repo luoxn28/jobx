@@ -30,11 +30,16 @@ public interface R {
     }
 
     /**
-     * 任务类型
+     * 任务信息
      */
     interface jobType {
         String Script = "Script";
         String Java = "Java";
+    }
+
+    interface jobStatus {
+        String CREATED = "CREATED";
+        String DELETED = "DELETED";
     }
 
 

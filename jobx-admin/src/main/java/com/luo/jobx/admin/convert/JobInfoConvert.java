@@ -37,4 +37,14 @@ public class JobInfoConvert extends BaseConvert {
         return beanList;
     }
 
+    public static JobInfoEntity toEntity(JobInfoBean bean) {
+        JobInfoEntity entity = null;
+
+        if (bean != null) {
+            entity = mapper.map(bean, JobInfoEntity.class);
+        }
+
+        return entity;
+    }
+
 }

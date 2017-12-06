@@ -1,9 +1,8 @@
 package com.luo.jobx.admin.controller;
 
+import com.luo.jobx.admin.bean.JobInfoBean;
 import com.luo.jobx.admin.service.JobInfoService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -27,6 +26,11 @@ public class JobInfoController {
     @GetMapping("/type")
     public Object getJobType() {
         return jobService.getJobType();
+    }
+
+    @PostMapping
+    public Object postJob(@RequestBody JobInfoBean jobBean) {
+        return jobService.insert(jobBean);
     }
 
 }
