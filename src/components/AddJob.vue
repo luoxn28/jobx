@@ -92,13 +92,25 @@
 
     created: function() {
       this.$http.get(this.jobTypeUrl).then((res) => {
-        this.jobTypeOptions = res.data;
+        if (this.catchError(res)) {
+          return false;
+        }
+
+        this.jobTypeOptions = res.data.data;
       });
     },
 
     methods: {
-      addJob(job) {
+      catchError(res) {
+        if (res.data.code < 0) {
+          this.$message.error(`请求错误：` + res.data.data);
+          return true;
+        }
 
+        return false;
+      },
+
+      addJob(job) {
         this.$refs['jobForm'].validate((valid) => {
           if (valid) {
             this.addJobDialogVisible = false;
@@ -111,17 +123,22 @@
               param: job.param,
               className: job.className
             }).then((res) => {
-                this.clearJob(false);
-                this.$message({
-                  type: 'success',
-                  message: '添加任务成功'
-                });
+              console.info(res);
+              if (this.catchError(res)) {
+                return false;
+              }
 
+              this.clearJob(false);
+              this.$message({
+                type: 'success',
+                message: '添加任务成功'
               });
+
+              // 调用父组件方法刷新
+              this.$parent.loadJobList();
+            });
           }
         });
-
-
       },
       clearJob(showMessage) {
         this.jobForm.jobId= '';

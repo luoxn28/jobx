@@ -10,11 +10,23 @@
       style="width: 100%"
       :row-class-name="tableRowClassName">
 
+      <!--隐藏job信息-->
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
             <el-form-item label="任务名字">
               <span>{{ props.row.jobName }}</span>
+            </el-form-item>
+            <el-form-item label="更新时间">
+              <span>{{ props.row.updateTime }}</span>
+            </el-form-item>
+            <el-form-item label="任务参数">
+              <span>{{ props.row.className }}</span>
+            </el-form-item>
+            <el-form-item label="任务角色">
+              <el-tag v-if="props.row.jobRole === 'Normal'" type="success" size="small">独立任务</el-tag>
+              <el-tag v-if="props.row.jobRole === 'Parent'" type="success" size="small">父任务</el-tag>
+              <el-tag v-if="props.row.jobRole === 'Child'" type="success" size="small">子任务</el-tag>
             </el-form-item>
           </el-form>
         </template>
@@ -22,16 +34,19 @@
 
       <el-table-column type="index" width="50"></el-table-column>
       <el-table-column align="center" prop="jobName" label="名字"></el-table-column>
-      <el-table-column align="center" prop="jobType" label="任务类型" width="100"></el-table-column>
+      <el-table-column align="center" prop="jobType" label="任务类型" width="100">
+        <template scope="scope">
+          <el-tag v-if="scope.row.jobType === 'Script'" type="info" size="small">脚本任务</el-tag>
+          <el-tag v-if="scope.row.jobType === 'Java'" type="success" size="small">Java任务</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column align="center" prop="cron" label="cron表达式"></el-table-column>
-      <el-table-column align="center" prop="param" label="任务参数"></el-table-column>
-      <el-table-column align="center" prop="className" label="执行类"></el-table-column>
-      <el-table-column align="center" prop="updateTime" label="更新时间"></el-table-column>
+      <el-table-column align="center" prop="classNameScriptPath" label="执行类/脚本"></el-table-column>
       <el-table-column label="操作">
         <template scope="scope">
-          <el-button @click="beforeEditJob(scope.row)" size="mini" type="text">编辑</el-button>
-          <el-button @click="deleteJob(scope.row)" size="mini" type="text">删除</el-button>
-          <el-button @click="triggerJob(scope.row)" size="mini" type="text">执行</el-button>
+          <el-button @click="beforeEditJob(scope.row)" size="mini" type="text" style="color: #409EFF;">编辑</el-button>
+          <el-button @click="deleteJob(scope.row)" size="mini" type="text" style="color: #FA5555;">删除</el-button>
+          <el-button @click="triggerJob(scope.row)" size="mini" type="text" style="color: #67C23A;">执行</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -77,7 +92,7 @@
       return {
         loadingJobList: true,
         jobList: [],
-        jobUrl: '/api/job/',
+        jobUrl: '/api/job',
 
         // 编辑任务
         editJobFormVisible: false,
@@ -90,7 +105,9 @@
           cron: '',
           desc: '',
           param: '',
+          scriptPath: '',
           className: '',
+          classNameScriptPath: '',
           paramCreator: '',
           paramDynamic: '',
           emailPhone: '',
@@ -109,6 +126,15 @@
     },
 
     methods: {
+      catchError(res) {
+        if (res.code < 0) {
+          this.$message.error(`请求错误：` + res.msg);
+          return true;
+        }
+
+        return false;
+      },
+
       tableRowClassName({row, rowIndex}) {
         if (rowIndex === 1) {
           return 'warning-row';
@@ -120,8 +146,12 @@
 
       // 加载任务列表
       loadJobList() {
-        this.$http.get(this.jobUrl + "list").then((res) => {
-          this.jobList = res.data;
+        this.$http.get(this.jobUrl + "/list").then((res) => {
+          if (this.catchError(res)) {
+            return false;
+          }
+
+          this.jobList = res.data.data;
         });
       },
 
@@ -134,7 +164,26 @@
       },
       deleteJob(job) {
 
+        this.$confirm('此操作将删除任务[ ' + job.jobName + ' ], 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+
+          this.$http.delete(this.jobUrl + '/' + job.jobId)
+            .then((res) => {
+              if (this.catchError(res)) {
+                return false;
+              }
+
+              this.$message.success("删除任务成功");
+              this.loadJobList();
+            })
+        }).catch(() => {
+          // 点击了取消
+        });
       },
+
       triggerJob(job) {
 
       }

@@ -22,7 +22,7 @@
       <el-table-column label="操作">
         <template scope="scope">
           <el-button @click="beforeEditExecutor(scope.row)" type="text" size="small">编辑</el-button>
-          <el-button @click="deleteExecutor(scope.row)" type="text" size="small">删除</el-button>
+          <el-button @click="deleteExecutor(scope.row)" type="text" size="small" style="color: #FA5555;">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -90,6 +90,15 @@
     },
 
     methods: {
+      catchError(res) {
+        if (res.code < 0) {
+          this.$message.error(`请求错误：` + res.msg);
+          return true;
+        }
+
+        return false;
+      },
+
       tableRowClassName({row, rowIndex}) {
         if (rowIndex === 1) {
           return 'warning-row';
@@ -101,7 +110,11 @@
       // 加载执行器信息
       loadExecutorData() {
         this.$http.get(this.executorListUrl).then((res) => {
-          this.executorList = res.data;
+          if (this.catchError(res)) {
+            return false;
+          }
+
+          this.executorList = res.data.data;
         });
       },
 
@@ -128,6 +141,10 @@
           name: executor.name,
           keepAliveTime: executor.keepAliveTime,
         }).then((res) => {
+          if (this.catchError(res)) {
+            return false;
+          }
+
           this.$message({
             type: 'success',
             message: '更新成功!'
@@ -157,8 +174,12 @@
           type: 'warning'
         }).then(() => {
 
-          this.$http.delete(this.executorUrl + row.executorId)
+            this.$http.delete(this.executorUrl + row.executorId)
             .then((res) => {
+              if (this.catchError(res)) {
+                return false;
+              }
+
               this.$message({
                 type: 'success',
                 message: '删除成功!'
@@ -172,10 +193,7 @@
             })
 
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });
+          // 点击了取消
         });
       }
     },
