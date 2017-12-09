@@ -42,6 +42,8 @@ public interface R {
      */
     interface jobStatus {
         String CREATED = "CREATED";
+        String RUNNING = "RUNNING";
+        String PAUSE = "PAUSE";
         String DELETED = "DELETED";
     }
 

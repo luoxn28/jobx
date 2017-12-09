@@ -22,4 +22,6 @@ public interface JobInfoDao {
 
     int insert(JobInfoEntity entity);
 
+    int update(JobInfoEntity entity);
+
 }

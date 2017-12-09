@@ -13,13 +13,13 @@
     <select id="selectByJobId" resultType="com.luo.jobx.admin.entity.JobInfoEntity">
         SELECT *
         FROM job
-        WHERE job_id = #{jobId}
+        WHERE job_id = #{jobId} AND status != 'DELETED'
     </select>
 
     <select id="selectByJobName" resultType="com.luo.jobx.admin.entity.JobInfoEntity">
         SELECT *
         FROM job
-        WHERE job_name = #{jobName}
+        WHERE job_name = #{jobName}  AND status != 'DELETED'
     </select>
 
     <insert id="insert">
@@ -38,5 +38,29 @@
             #{createTime}, #{updateTime}, #{status}
         )
     </insert>
+
+    <update id="update">
+        UPDATE job
+        SET
+            <if test="jobName != null">`job_name` = #{jobName},</if>
+            <if test="jobType != null">`job_type` = #{jobType},</if>
+            <if test="jobRole != null">`job_role` = #{jobRole},</if>
+            <if test="cron != null">`cron` = #{cron},</if>
+            <if test="desc != null">`desc` = #{desc},</if>
+            <if test="param != null">`param` = #{param},</if>
+            <if test="scriptPath != null">`script_path` = #{scriptPath},</if>
+            <if test="className != null">`class_name` = #{className},</if>
+            <if test="paramCreator != null">`param_creator` = #{paramCreator},</if>
+            <if test="paramDynamic != null">`param_dynamic` = #{paramDynamic},</if>
+            <if test="routeStrategy != null">`route_strategy` = #{routeStrategy},</if>
+            <if test="failStrategy != null">`fail_strategy` = #{failStrategy},</if>
+            <if test="emailPhone != null">`email_phone` = #{emailPhone},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="updateTime != null">`updateTime` = #{updateTime},</if>
+            <if test="status != null">`status` = #{status},</if>
+            job_id = #{jobId}
+
+        WHERE job_id = #{jobId}
+    </update>
 
 </mapper>

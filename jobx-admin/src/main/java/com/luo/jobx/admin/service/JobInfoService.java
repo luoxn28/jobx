@@ -25,6 +25,13 @@ public interface JobInfoService {
      * @param jobBean 任务信息
      * @return true成功/false失败
      */
-    boolean addJob(JobInfoBean jobBean);
+    int addJob(JobInfoBean jobBean);
+
+    /**
+     * 删除任务
+     * @param jobId jobId
+     * @return 1成功
+     */
+    int deleteJob(String jobId);
 
 }

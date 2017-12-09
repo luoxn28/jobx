@@ -4,6 +4,8 @@ import com.luo.jobx.admin.bean.JobInfoBean;
 import com.luo.jobx.admin.convert.JobInfoConvert;
 import com.luo.jobx.admin.dao.JobInfoDao;
 import com.luo.jobx.admin.entity.JobInfoEntity;
+import com.luo.jobx.admin.exception.JobInfoException;
+import com.luo.jobx.admin.exception.enums.JobInfoEnum;
 import com.luo.jobx.admin.service.JobInfoService;
 import com.luo.jobx.core.util.BusinessIDGenerator;
 import com.luo.jobx.core.util.R;
@@ -40,18 +42,17 @@ public class JobInfoServiceImpl implements JobInfoService {
     }
 
     @Override
-    public boolean addJob(JobInfoBean jobBean) {
+    public int addJob(JobInfoBean jobBean) {
         JobInfoEntity jobEntity = JobInfoConvert.toEntity(jobBean);
-        if (jobBean == null) {
-            return false;
+        if (jobEntity == null) {
+            throw new JobInfoException(JobInfoEnum.PARAM_ERROR);
         }
 
         // 根据任务名确认该任务是否已存在
         if (jobDao.selectByJobName(jobEntity.getJobName()) != null) {
             logger.info("任务已存在, jobName: " + jobEntity.getJobName());
-            return false;
+            throw new JobInfoException(JobInfoEnum.JOB_EXIST);
         }
-
 
         jobEntity.setJobId(BusinessIDGenerator.getId());
         jobEntity.setCreateTime(new Date());
@@ -61,13 +62,22 @@ public class JobInfoServiceImpl implements JobInfoService {
             jobEntity.setJobRole(R.jobRole.Child);
         }
 
-        try {
-            jobDao.insert(jobEntity);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        jobDao.insert(jobEntity);
+        logger.info("添加任务成功, jobId: " + jobEntity.getJobId() + ", jobName: " + jobEntity.getJobName());
+
+        return 1;
+    }
+
+    @Override
+    public int deleteJob(String jobId) {
+        JobInfoEntity entity = new JobInfoEntity();
+
+        entity.setJobId(jobId);
+        entity.setStatus(R.jobStatus.DELETED);
+        jobDao.update(entity);
+
+        logger.info("删除任务成功，jobId: " + jobId);
+        return 1;
     }
 
 }

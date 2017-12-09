@@ -2,6 +2,8 @@ package com.test.jobx.admin.dao;
 
 import com.luo.jobx.admin.dao.JobInfoDao;
 import com.luo.jobx.admin.entity.JobInfoEntity;
+import com.luo.jobx.admin.service.JobInfoService;
+import com.luo.jobx.core.util.R;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,6 +41,18 @@ public class JobInfoTest {
         System.out.println(jobInfoDao.selectList(null));
         System.out.println(jobInfoDao.selectList("script"));
         System.out.println(jobInfoDao.selectList("AAA"));
+    }
+
+    @Resource
+    JobInfoService jobInfoService;
+
+    @Test
+    public void test22() {
+        JobInfoEntity entity = new JobInfoEntity();
+
+        entity.setJobId("17120915231933023133");
+        entity.setStatus(R.jobStatus.DELETED);
+        jobInfoDao.update(entity);
     }
 
 }

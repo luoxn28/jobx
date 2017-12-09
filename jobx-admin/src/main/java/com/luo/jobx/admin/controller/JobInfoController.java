@@ -2,6 +2,7 @@ package com.luo.jobx.admin.controller;
 
 import com.luo.jobx.admin.bean.JobInfoBean;
 import com.luo.jobx.admin.service.JobInfoService;
+import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,6 +32,15 @@ public class JobInfoController {
     @PostMapping
     public Object postJob(@RequestBody JobInfoBean jobBean) {
         return jobService.addJob(jobBean);
+    }
+
+    @DeleteMapping("/{jobId}")
+    public Object deleteJob(@PathVariable String jobId) {
+        if (StrUtil.isBlank(jobId)) {
+            return null;
+        }
+
+        return jobService.deleteJob(jobId);
     }
 
 }
