@@ -1,6 +1,7 @@
 package com.luo.jobx.admin.service.impl;
 
 import com.luo.jobx.admin.bean.JobInfoBean;
+import com.luo.jobx.admin.component.JobxScheduler;
 import com.luo.jobx.admin.convert.JobInfoConvert;
 import com.luo.jobx.admin.dao.JobInfoDao;
 import com.luo.jobx.admin.entity.JobInfoEntity;
@@ -13,6 +14,7 @@ import com.xiaoleilu.hutool.util.StrUtil;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -31,6 +33,9 @@ public class JobInfoServiceImpl implements JobInfoService {
     @Resource
     private JobInfoDao jobDao;
 
+    @Resource
+    private JobxScheduler jobxScheduler;
+
     @Override
     public List<JobInfoBean> getJobList() {
         return JobInfoConvert.toBeanList(jobDao.selectList(null));
@@ -42,6 +47,7 @@ public class JobInfoServiceImpl implements JobInfoService {
     }
 
     @Override
+    @Transactional
     public int addJob(JobInfoBean jobBean) {
         JobInfoEntity jobEntity = JobInfoConvert.toEntity(jobBean);
         if (jobEntity == null) {
@@ -60,19 +66,33 @@ public class JobInfoServiceImpl implements JobInfoService {
         jobEntity.setStatus(R.jobStatus.CREATED);
         if (StrUtil.isBlank(jobEntity.getCron())) {
             jobEntity.setJobRole(R.jobRole.Child);
+        } else {
+            jobEntity.setJobRole(R.jobRole.Normal);
         }
 
-        jobDao.insert(jobEntity);
-        logger.info("添加任务成功, jobId: " + jobEntity.getJobId() + ", jobName: " + jobEntity.getJobName());
+        try {
+            jobDao.insert(jobEntity);
+
+            if (StrUtil.isNotBlank(jobEntity.getCron())) {
+                jobxScheduler.addJob(jobEntity.getJobId(), jobEntity.getJobId(), jobEntity.getCron());
+
+                // 更新任务状态为运行
+                jobEntity = new JobInfoEntity(jobEntity.getJobId());
+                jobEntity.setStatus(R.jobStatus.RUNNING);
+                jobDao.update(jobEntity);
+            }
+            logger.info("添加任务成功, jobId: " + jobEntity.getJobId() + ", jobName: " + jobEntity.getJobName());
+        } catch (Exception e) {
+            logger.info("添加任务失败, jobId: " + jobEntity.getJobId() + ", jobName: " + jobEntity.getJobName());
+            throw e;
+        }
 
         return 1;
     }
 
     @Override
     public int deleteJob(String jobId) {
-        JobInfoEntity entity = new JobInfoEntity();
-
-        entity.setJobId(jobId);
+        JobInfoEntity entity = new JobInfoEntity(jobId);
         entity.setStatus(R.jobStatus.DELETED);
         jobDao.update(entity);
 

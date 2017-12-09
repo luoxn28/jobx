@@ -30,4 +30,5 @@ public class JobInfoBean {
     private String failStrategy;
     private String createTime;
     private String updateTime;
+    private String status;
 }

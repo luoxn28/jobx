@@ -1,6 +1,9 @@
 package com.luo.jobx.admin.component;
 
 import com.luo.jobx.admin.component.bean.JobxBean;
+import com.luo.jobx.admin.exception.JobInfoException;
+import com.luo.jobx.admin.exception.enums.JobInfoEnum;
+import com.luo.jobx.core.exception.BaseException;
 import com.luo.jobx.core.exception.ExceptionX;
 import com.luo.jobx.core.exception.JobException;
 import com.luo.jobx.core.exception.ParamException;
@@ -25,26 +28,37 @@ public class JobxScheduler {
     @Resource(name = "internalScheduler")
     private Scheduler scheduler;
 
-    public void addJob(String name, String group, String cron) throws Exception {
+    public void addJob(String name, String group, String cron) {
         if (StrUtil.isBlank(name) || StrUtil.isBlank(group) || StrUtil.isBlank(cron)) {
-            throw new ParamException(ExceptionX.ERROR_PARAM);
+            throw new JobInfoException(JobInfoEnum.PARAM_ERROR);
         }
 
-        if (checkExists(name, group)) {
-            throw new JobException(ExceptionX.JOB_EXISTS);
+        try {
+            if (checkExists(name, group)) {
+                return;
+            }
+
+            // cron
+            CronScheduleBuilder cronScheduleBuilder =
+                    CronScheduleBuilder.cronSchedule(cron).withMisfireHandlingInstructionDoNothing();
+            CronTrigger cronTrigger =
+                    TriggerBuilder.newTrigger().withIdentity(name, group).withSchedule(cronScheduleBuilder).build();
+
+            // 添加任务
+            JobDetail jobDetail = JobBuilder.newJob(JobxBean.class).withIdentity(name, group).build();
+            scheduler.scheduleJob(jobDetail, cronTrigger);
+
+            logger.info("添加任务成功: jobDetail: " + jobDetail);
+        } catch (Exception e) {
+            if (e instanceof SchedulerException) {
+                logger.info("添加任务失败, quartz未知错误: name: " + name + ", cron: " + cron);
+                throw new JobInfoException(JobInfoEnum.UNKNOWN_ERROR);
+            } else {
+                logger.info("添加任务失败, cron表达式错误: name: " + name + ", cron: " + cron);
+                throw new JobInfoException(JobInfoEnum.CRON_ERROR);
+            }
         }
 
-        // cron
-        CronScheduleBuilder cronScheduleBuilder =
-                CronScheduleBuilder.cronSchedule(cron).withMisfireHandlingInstructionDoNothing();
-        CronTrigger cronTrigger =
-                TriggerBuilder.newTrigger().withIdentity(name, group).withSchedule(cronScheduleBuilder).build();
-
-        // 添加任务
-        JobDetail jobDetail = JobBuilder.newJob(JobxBean.class).withIdentity(name, group).build();
-        scheduler.scheduleJob(jobDetail, cronTrigger);
-
-        logger.info("添加任务成功: jobDetail=" + jobDetail);
     }
 
     public void deleteJob(String name, String group) throws Exception {

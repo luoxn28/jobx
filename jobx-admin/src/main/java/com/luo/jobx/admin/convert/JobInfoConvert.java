@@ -34,7 +34,7 @@ public class JobInfoConvert extends BaseConvert {
             if (StrUtil.isBlank(entity.getCron())) {
                 bean.setJobRole(R.jobRole.Child);
             } else {
-                bean.setJobRole(R.jobRole.Parent);
+                bean.setJobRole(R.jobRole.Normal);
             }
         }
 

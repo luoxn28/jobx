@@ -33,4 +33,8 @@ public class JobInfoEntity {
     private Date createTime;
     private Date updateTime;
     private String status;
+
+    public JobInfoEntity(String jobId) {
+        this.jobId = jobId;
+    }
 }

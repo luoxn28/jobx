@@ -52,7 +52,6 @@ public interface R {
      */
     interface jobRole {
         String Normal = "Normal";
-        String Parent = "Parent";
         String Child = "Child";
     }
 
