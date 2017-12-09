@@ -18,6 +18,8 @@ public interface JobInfoDao {
 
     JobInfoEntity selectByJobId(@Param("jobId") String jobId);
 
+    JobInfoEntity selectByJobName(@Param("jobName") String jobName);
+
     int insert(JobInfoEntity entity);
 
 }

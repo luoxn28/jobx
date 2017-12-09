@@ -30,7 +30,7 @@ public class JobInfoController {
 
     @PostMapping
     public Object postJob(@RequestBody JobInfoBean jobBean) {
-        return jobService.insert(jobBean);
+        return jobService.addJob(jobBean);
     }
 
 }

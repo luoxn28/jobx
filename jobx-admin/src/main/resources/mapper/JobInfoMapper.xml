@@ -16,6 +16,12 @@
         WHERE job_id = #{jobId}
     </select>
 
+    <select id="selectByJobName" resultType="com.luo.jobx.admin.entity.JobInfoEntity">
+        SELECT *
+        FROM job
+        WHERE job_name = #{jobName}
+    </select>
+
     <insert id="insert">
         INSERT job (
             id, job_id, job_name, job_type, job_role,

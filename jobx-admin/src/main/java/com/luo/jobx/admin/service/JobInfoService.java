@@ -20,6 +20,11 @@ public interface JobInfoService {
      */
     String[][] getJobType();
 
-    boolean insert(JobInfoBean jobBean);
+    /**
+     * 添加任务
+     * @param jobBean 任务信息
+     * @return true成功/false失败
+     */
+    boolean addJob(JobInfoBean jobBean);
 
 }
