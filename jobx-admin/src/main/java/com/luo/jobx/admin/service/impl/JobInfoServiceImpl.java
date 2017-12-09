@@ -16,6 +16,11 @@ import java.util.List;
 @Service
 public class JobInfoServiceImpl implements JobInfoService {
 
+    private static final String[][] JOB_TYPE = new String[][] {
+            {R.jobType.Script, "脚本类型"},
+            {R.jobType.Java, "Java类型"}
+    };
+
     @Resource
     private JobInfoDao jobInfoDao;
 
@@ -26,10 +31,7 @@ public class JobInfoServiceImpl implements JobInfoService {
 
     @Override
     public String[][] getJobType() {
-        return new String[][] {
-                {R.jobType.Script, "脚本类型"},
-                {R.jobType.Java, "Java类型"}
-        };
+        return JOB_TYPE;
     }
 
     @Override

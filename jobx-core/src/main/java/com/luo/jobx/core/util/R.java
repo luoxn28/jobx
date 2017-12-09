@@ -30,17 +30,28 @@ public interface R {
     }
 
     /**
-     * 任务信息
+     * 任务类型
      */
     interface jobType {
         String Script = "Script";
         String Java = "Java";
     }
 
+    /**
+     * 任务状态
+     */
     interface jobStatus {
         String CREATED = "CREATED";
         String DELETED = "DELETED";
     }
 
+    /**
+     * 任务角色
+     */
+    interface jobRole {
+        String Normal = "Normal";
+        String Parent = "Parent";
+        String Child = "Child";
+    }
 
 }

@@ -21,6 +21,8 @@ public class JobInfoBean {
     private String desc;
     private String param;
     private String className;
+    private String scriptPath;
+    private String classNameScriptPath;
     private String paramCreator;
     private String paramDynamic;
     private String emailPhone;
