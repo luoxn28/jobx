@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum JobInfoEnum {
     UNKNOWN_ERROR(-1, "UNKNOWN_ERROR", "未知错误"),
+    QUARTZ_ERROR(-1, "QUARTZ_ERROR", "Quartz错误"),
 
     PARAM_ERROR(-1, "PARAM_ERROR", "参数错误"),
     JOB_EXIST(-1, "JOB_EXIST", "任务已存在"),

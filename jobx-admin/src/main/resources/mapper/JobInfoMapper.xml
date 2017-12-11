@@ -56,7 +56,7 @@
             <if test="failStrategy != null">`fail_strategy` = #{failStrategy},</if>
             <if test="emailPhone != null">`email_phone` = #{emailPhone},</if>
             <if test="createTime != null">`create_time` = #{createTime},</if>
-            <if test="updateTime != null">`updateTime` = #{updateTime},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime},</if>
             <if test="status != null">`status` = #{status},</if>
             job_id = #{jobId}
 

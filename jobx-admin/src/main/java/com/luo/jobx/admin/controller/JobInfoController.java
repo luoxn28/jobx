@@ -34,6 +34,33 @@ public class JobInfoController {
         return jobService.addJob(jobBean);
     }
 
+    @PutMapping("/trigger/{jobId}")
+    public Object triggerJob(@PathVariable String jobId) {
+        if (StrUtil.isBlank(jobId)) {
+            return null;
+        }
+
+        return jobService.triggerJob(jobId);
+    }
+
+    @PutMapping("/pause/{jobId}")
+    public Object pauseJob(@PathVariable String jobId) {
+        if (StrUtil.isBlank(jobId)) {
+            return null;
+        }
+
+        return jobService.pauseJob(jobId);
+    }
+
+    @PutMapping("/resume/{jobId}")
+    public Object resumeJob(@PathVariable String jobId) {
+        if (StrUtil.isBlank(jobId)) {
+            return null;
+        }
+
+        return jobService.resumeJob(jobId);
+    }
+
     @DeleteMapping("/{jobId}")
     public Object deleteJob(@PathVariable String jobId) {
         if (StrUtil.isBlank(jobId)) {

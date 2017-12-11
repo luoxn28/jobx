@@ -28,6 +28,26 @@ public interface JobInfoService {
     int addJob(JobInfoBean jobBean);
 
     /**
+     * 触发任务
+     *
+     */
+    int triggerJob(String jobId);
+
+    /**
+     * 恢复任务
+     * @param jobId 任务Id
+     * @return 1成功
+     */
+    int resumeJob(String jobId);
+
+    /**
+     * 暂停任务
+     * @param jobId 任务Id
+     * @return 1成功
+     */
+    int pauseJob(String jobId);
+
+    /**
      * 删除任务
      * @param jobId jobId
      * @return 1成功

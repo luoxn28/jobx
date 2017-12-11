@@ -84,20 +84,110 @@ public class JobInfoServiceImpl implements JobInfoService {
             logger.info("添加任务成功, jobId: " + jobEntity.getJobId() + ", jobName: " + jobEntity.getJobName());
         } catch (Exception e) {
             logger.info("添加任务失败, jobId: " + jobEntity.getJobId() + ", jobName: " + jobEntity.getJobName());
-            throw e;
+            throw new JobInfoException(JobInfoEnum.UNKNOWN_ERROR, e.getMessage());
         }
 
         return 1;
     }
 
     @Override
-    public int deleteJob(String jobId) {
-        JobInfoEntity entity = new JobInfoEntity(jobId);
-        entity.setStatus(R.jobStatus.DELETED);
-        jobDao.update(entity);
+    public int triggerJob(String jobId) {
+        JobInfoEntity entity = jobDao.selectByJobId(jobId);
+        if (entity == null) {
+            logger.warn("触发任务失败，该任务不存在，jobId: " + jobId);
+            return -1;
+        }
 
-        logger.info("删除任务成功，jobId: " + jobId);
-        return 1;
+        try {
+            if (StrUtil.isNotBlank(entity.getCron())) {
+                jobxScheduler.triggerJob(entity.getJobId(), entity.getJobId());
+            }
+
+            logger.info("触发任务成功，jobId: " + jobId);
+            return 1;
+        } catch (Exception e) {
+            logger.info("触发任务失败, jobId: " + entity.getJobId() + ", jobName: " + entity.getJobName() +
+                    ", " + e);
+            throw new JobInfoException(JobInfoEnum.UNKNOWN_ERROR, e.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional
+    public int resumeJob(String jobId) {
+        JobInfoEntity entity = jobDao.selectByJobId(jobId);
+        if (entity == null) {
+            logger.warn("恢复任务失败，该任务不存在，jobId: " + jobId);
+            return -1;
+        }
+
+        try {
+            entity.setStatus(R.jobStatus.RUNNING);
+            jobDao.update(entity);
+
+            if (StrUtil.isNotBlank(entity.getCron())) {
+                jobxScheduler.resumeJob(entity.getJobId(), entity.getJobId());
+            }
+
+            logger.info("恢复任务成功，jobId: " + jobId);
+            return 1;
+        } catch (Exception e) {
+            logger.info("恢复任务失败, jobId: " + entity.getJobId() + ", jobName: " + entity.getJobName() +
+                    ", " + e);
+            throw new JobInfoException(JobInfoEnum.UNKNOWN_ERROR, e.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional
+    public int pauseJob(String jobId) {
+        JobInfoEntity entity = jobDao.selectByJobId(jobId);
+        if (entity == null) {
+            logger.warn("暂停任务失败，该任务不存在，jobId: " + jobId);
+            return -1;
+        }
+
+        try {
+            entity.setStatus(R.jobStatus.PAUSE);
+            jobDao.update(entity);
+
+            if (StrUtil.isNotBlank(entity.getCron())) {
+                jobxScheduler.pauseJob(entity.getJobId(), entity.getJobId());
+            }
+
+            logger.info("暂停任务成功，jobId: " + jobId);
+            return 1;
+        } catch (Exception e) {
+            logger.info("暂停任务失败, jobId: " + entity.getJobId() + ", jobName: " + entity.getJobName() +
+                    ", " + e);
+            throw new JobInfoException(JobInfoEnum.UNKNOWN_ERROR, e.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional
+    public int deleteJob(String jobId) {
+        JobInfoEntity entity = jobDao.selectByJobId(jobId);
+        if (entity == null) {
+            logger.warn("删除任务失败，该任务不存在，jobId: " + jobId);
+            return -1;
+        }
+
+        try {
+            entity.setStatus(R.jobStatus.DELETED);
+            jobDao.update(entity);
+
+            if (StrUtil.isNotBlank(entity.getCron())) {
+                jobxScheduler.deleteJob(entity.getJobId(), entity.getJobId());
+            }
+
+            logger.info("删除任务成功，jobId: " + jobId);
+            return 1;
+        } catch (Exception e) {
+            logger.info("删除任务失败, jobId: " + entity.getJobId() + ", jobName: " + entity.getJobName() +
+                    ", " + e);
+            throw new JobInfoException(JobInfoEnum.UNKNOWN_ERROR, e.getMessage());
+        }
     }
 
 }
