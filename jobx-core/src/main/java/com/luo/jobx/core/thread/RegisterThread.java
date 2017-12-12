@@ -3,13 +3,13 @@ package com.luo.jobx.core.thread;
 import com.luo.jobx.core.bean.RegisterParam;
 import com.luo.jobx.core.bean.RegisterResult;
 import com.luo.jobx.core.bean.ReturnX;
+import com.luo.jobx.core.executor.ExecutorStarter;
 import com.luo.jobx.core.util.HttpXUtil;
 import com.luo.jobx.core.util.JacksonUtil;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RegisterThread {
 
-    private final static Logger logger = LogManager.getLogger(RegisterThread.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private boolean running = true;
 
@@ -54,19 +54,19 @@ public class RegisterThread {
                                 keepAliveUrl = keepAliveUrl.replace("register", registerResult.getKeepAliveUrl());
                                 keepAlive = true;
 
-                                logger.info("执行器注册成功，注册url: " + registerUrl);
+                                logger.info("执行器注册成功，注册url: {}", registerUrl);
                                 logger.info("执行器与调度中心保活中...");
                             } catch (Exception e) {
-                                logger.info("执行器注册时调度中心返回数据格式出错: " + e);
+                                logger.info("执行器注册时调度中心返回数据格式出错: {}", e);
                             }
 
                         } else {
-                            logger.info("执行器注册失败，注册url: " + registerUrl);
+                            logger.info("执行器注册失败，注册url: {}", registerUrl);
                         }
                     }
 
                     try {
-                        TimeUnit.SECONDS.sleep(10);
+                        TimeUnit.SECONDS.sleep(ExecutorStarter.KEEP_ALIVE_TIME);
                     } catch (InterruptedException e) {
                         logger.error(e);
                     }

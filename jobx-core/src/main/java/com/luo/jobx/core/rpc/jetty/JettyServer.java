@@ -1,7 +1,7 @@
 package com.luo.jobx.core.rpc.jetty;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JettyServer {
 
-    private final static Logger logger = LogManager.getLogger(JettyServer.class);
+    private final static Logger logger = LogManager.getLogger();
 
     private Server jettyServer;
     private Thread startThread;

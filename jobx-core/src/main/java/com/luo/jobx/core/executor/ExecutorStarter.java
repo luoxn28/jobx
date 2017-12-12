@@ -11,8 +11,8 @@ import com.luo.jobx.core.util.R;
 import com.luo.jobx.core.util.SystemUtil;
 import com.xiaoleilu.hutool.convert.Convert;
 import com.xiaoleilu.hutool.setting.dialect.Props;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -27,12 +27,22 @@ import java.io.FileWriter;
 @Component
 public class ExecutorStarter {
 
-    private final static Logger logger = LogManager.getLogger(ExecutorStarter.class);
+    private static final Logger logger = LogManager.getLogger();
 
     // 执行器配置文件，所在目录为当前程序运行目录，注意配置文件中内容可能为中文，注意编码格式问题
     private static final String CONFIG_FILE_NAME = "executor.properties";
     public static final String CONFIG_FILE_PATH = SystemUtil.applicationPath + CONFIG_FILE_NAME;
 
+    /**
+     * 执行器配置信息
+     *
+     * TOKEN: 可用于调度中心与执行器通信的安全验证
+     * REGISTER_URL: 注册URL
+     * IP: 执行器IP
+     * PORT: 执行器PORT
+     * NAME: 执行器名字
+     * KEEP_ALIVE_TIME: 保活时间
+     */
     public static final String TOKEN = BusinessIDGenerator.getId();
     public static String REGISTER_URL = "";
     public static String IP = "";
@@ -138,7 +148,7 @@ public class ExecutorStarter {
             // 主线程join等待
             jettyServer.join();
         } catch (Exception e) {
-            logger.warn("执行器运行异常: " + e);
+            logger.warn("执行器运行异常: {}", e);
         } finally {
             destroy();
         }

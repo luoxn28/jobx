@@ -3,8 +3,8 @@ package com.luo.jobx.core.component;
 import com.luo.jobx.core.exception.ExceptionX;
 import com.luo.jobx.core.exception.SystemException;
 import com.xiaoleilu.hutool.util.StrUtil;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ArgsComponent {
 
-    private final static Logger logger = LogManager.getLogger(ArgsComponent.class);
+    private static final Logger logger = LogManager.getLogger();
 
     public boolean check(String... args) {
         if (args.length < 3) {
