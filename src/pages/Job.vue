@@ -52,7 +52,7 @@
         <template scope="scope">
           <el-button @click="beforeEditJob(scope.row)" size="mini" type="text" style="color: #409EFF;">编辑</el-button>
           <el-button @click="deleteJob(scope.row)" size="mini" type="text" style="color: #FA5555;">删除</el-button>
-          <el-button @click="triggerJob(scope.row)" size="mini" type="text" style="color: #67C23A;">执行</el-button>
+          <el-button @click="triggerJob(scope.row)" size="mini" type="text" style="color: #67C23A;">触发</el-button>
           <el-button v-if="scope.row.status !== 'PAUSE'"
                      @click="pauseJob(scope.row)" size="mini" type="text" style="color: #67C23A;">暂停</el-button>
           <el-button v-if="scope.row.status === 'PAUSE'"
