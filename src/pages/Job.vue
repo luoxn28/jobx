@@ -25,7 +25,6 @@
             </el-form-item>
             <el-form-item label="任务角色">
               <el-tag v-if="props.row.jobRole === 'Normal'" type="success" size="small">独立任务</el-tag>
-              <el-tag v-if="props.row.jobRole === 'Parent'" type="success" size="small">父任务</el-tag>
               <el-tag v-if="props.row.jobRole === 'Child'" type="success" size="small">子任务</el-tag>
             </el-form-item>
           </el-form>
@@ -42,11 +41,22 @@
       </el-table-column>
       <el-table-column align="center" prop="cron" label="cron表达式"></el-table-column>
       <el-table-column align="center" prop="classNameScriptPath" label="执行类/脚本"></el-table-column>
+      <el-table-column align="center" prop="status" label="状态">
+        <template scope="scope">
+          <el-tag v-if="scope.row.status === 'CREATED'" type="info" size="small" >创建</el-tag>
+          <el-tag v-if="scope.row.status === 'RUNNING'" type="success" size="small">运行</el-tag>
+          <el-tag v-if="scope.row.status === 'PAUSE'" type="info" size="small">暂停</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template scope="scope">
           <el-button @click="beforeEditJob(scope.row)" size="mini" type="text" style="color: #409EFF;">编辑</el-button>
           <el-button @click="deleteJob(scope.row)" size="mini" type="text" style="color: #FA5555;">删除</el-button>
           <el-button @click="triggerJob(scope.row)" size="mini" type="text" style="color: #67C23A;">执行</el-button>
+          <el-button v-if="scope.row.status !== 'PAUSE'"
+                     @click="pauseJob(scope.row)" size="mini" type="text" style="color: #67C23A;">暂停</el-button>
+          <el-button v-if="scope.row.status === 'PAUSE'"
+                     @click="resumeJob(scope.row)" size="mini" type="text" style="color: #67C23A;">恢复</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -115,6 +125,7 @@
           failStrategy: '',
           createTime: '',
           updateTime: '',
+          status: '',
         },
       }
     },
@@ -186,6 +197,68 @@
 
       triggerJob(job) {
 
+        this.$confirm('此操作将触发任务[ ' + job.jobName + ' ], 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+
+          this.$http.put(this.jobUrl + '/trigger/' + job.jobId)
+            .then((res) => {
+              if (this.catchError(res)) {
+                return false;
+              }
+
+              this.$message.success("触发任务成功");
+              this.loadJobList();
+            })
+        }).catch(() => {
+          // 点击了取消
+        });
+      },
+
+      pauseJob(job) {
+
+        this.$confirm('此操作将暂定任务[ ' + job.jobName + ' ], 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+
+          this.$http.put(this.jobUrl + '/pause/' + job.jobId)
+            .then((res) => {
+              if (this.catchError(res)) {
+                return false;
+              }
+
+              this.$message.success("暂定任务成功");
+              this.loadJobList();
+            })
+        }).catch(() => {
+          // 点击了取消
+        });
+      },
+
+      resumeJob(job) {
+
+        this.$confirm('此操作将恢复任务[ ' + job.jobName + ' ], 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+
+          this.$http.put(this.jobUrl + '/resume/' + job.jobId)
+            .then((res) => {
+              if (this.catchError(res)) {
+                return false;
+              }
+
+              this.$message.success("恢复任务成功");
+              this.loadJobList();
+            })
+        }).catch(() => {
+          // 点击了取消
+        });
       }
     },
   }
